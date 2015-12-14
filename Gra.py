@@ -30,6 +30,8 @@ def graj(x):
 
 thread.start_new_thread(aaplayer,())
 
+# initialize font; must be called after 'pygame.init()' to avoid 'Font not Initialized' error
+myfont = pygame.font.SysFont("monospace", 15)
 
 size = width, height = 1366, 768
 speedtlo = [-5, 0]
@@ -55,6 +57,7 @@ wybuchlista=[]
 wybuchpomlista=[]
 ilosc_zyc = 2
 screen = pygame.display.set_mode(size)
+czy_zliczac_kolizcje = 1
  
 tlo1 = pygame.image.load("files/tlo.bmp")
 tlorect1 = tlo1.get_rect()
@@ -126,6 +129,7 @@ def inicjalizuj_przeciwnikow(pomlista):
 lista = inicjalizuj_przeciwnikow(pomlista)
 
 while ilosc_zyc > 0:
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
         #### ruch klawiszy
@@ -145,7 +149,8 @@ while ilosc_zyc > 0:
              speed[1] = 0
         if event.type == pygame.KEYUP and event.key==pygame.K_DOWN:
              speed[1] = 0 
-        if event.type == pygame.KEYUP and event.key==pygame.K_ESCAPE:
+        if event.type == pygame.KEYUP and event.key==pygame.K_ESCAPE and kolizja==1:
+             czy_zliczac_kolizcje = 1
              graj(r"sound/powrot.wav")
              kolizja=0 
              for i in range(9,42):
@@ -165,12 +170,14 @@ while ilosc_zyc > 0:
 
     ########### kolizja statku z kamieniami
     for i in lista:
-      if statekrect.collidelistall([i[1]]):
-         kolizja=1
-         ilosc_zyc-=1
-         lista = inicjalizuj_przeciwnikow(pomlista)
-         sys.stdout.write("Kolizja\n")
-         sys.stdout.flush()
+      if statekrect.collidelistall([i[1]]) and czy_zliczac_kolizcje == 1:
+        czy_zliczac_kolizcje = 0
+        kolizja=1
+        ilosc_zyc-=1
+        lista = inicjalizuj_przeciwnikow(pomlista)
+        graj("sound/wybuch.wav")
+        sys.stdout.write("Kolizja\n")
+        sys.stdout.flush()
 
 
     ### kolizja strzalow z kamieniami
@@ -258,7 +265,6 @@ while ilosc_zyc > 0:
       if wybuchlista<>[]:
          pom=wybuchlista.pop(0)
          screen.blit(pom[0], statekrect)
-         graj("sound/wybuch.wav")
       if ilosc_zyc<=0:
          sys.stdout.write("ilosc_zyc==0")
          sys.stdout.flush()
@@ -267,6 +273,9 @@ while ilosc_zyc > 0:
        screen.blit(i[0],i[1])
     for i in strzalist:
        screen.blit(i[0],i[1])
+       
+    label = myfont.render("Zycia:" + str(ilosc_zyc), 1, (255,0,0))
+    screen.blit(label, (10, 10))
 
     pygame.display.flip()
     
