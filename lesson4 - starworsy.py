@@ -37,9 +37,19 @@ size = width, height = 800, 600
 speedtlo = [-5, 0]
 speedstrz = [4, 0]
 speed = [0,0]
-l_kamien=10
-speedkam=[-4,0]
-lista=[]
+#l_kamien=10
+
+l_kaczynski= 3;
+l_tusk = 3;
+
+#speedkam=[-4,0]
+speed_tusk = [-3,0]
+speed_kaczynski = [-2,0]
+
+#lista=[]
+lista_tusk=[]
+lista_kaczynski=[]
+
 pomlista=[]
 strzalist=[]
 kolizja=0
@@ -67,25 +77,50 @@ koniecrect = koniecrect.move([40,200])
 strzal = pygame.image.load("files/strzal.gif")
 strzalrect = strzal.get_rect()
 
-##################### lista kamieni
-for i in range(1,l_kamien+2):
-   pom = pygame.image.load("files/kamien.gif")
-   pom1= pom.get_rect()
-   pom2= (random.randint(850,1500),random.randint(51,550))
-   ###pom2=(300,300)
-   lista.insert(-1,(pom,pom1,pom2))
+# ##################### lista kamieni
+# for i in range(1,l_kamien+2):
+   # pom = pygame.image.load("files/kamien.gif")
+   # pom1= pom.get_rect()
+   # pom2= (random.randint(850,1500),random.randint(51,550))
+   # ###pom2=(300,300)
+   # lista.insert(-1,(pom,pom1,pom2))
 
-for i in lista:
+##Lista Tuskow
+for i in range(1,l_tusk+2):
+	tusk_gif = pygame.image.load("files/tusk.jpg")
+	tusk_rect = tusk_gif.get_rect()
+	tusk_pos = (random.randint(850,1500),random.randint(51,550))
+	lista_tusk.insert(-1,(tusk_gif,tusk_rect,tusk_pos))
+
+#Lista Kaczynskich
+for i in range(1,l_kaczynski+2):
+	kaczynski_gif = pygame.image.load("files/kaczynski.jpg")
+	kaczynski_rect = kaczynski_gif.get_rect()
+	kaczynski_pos = (random.randint(850,1500),random.randint(51,550))
+	###pom2=(300,300)
+	lista_kaczynski.insert(-1,(kaczynski_gif,kaczynski_rect,kaczynski_pos))
+
+for i in lista_kaczynski:
     pom=i[0]
     pom2=i[2]
     x1=pom2[0]
     y1=pom2[1]
     pom1=i[1].move(x1,y1)
     pomlista.insert(-1,(pom,pom1,pom2))
-lista=pomlista
+lista_kaczynski=pomlista
 pomlista=[]
 
+for i in lista_tusk:
+    pom=i[0]
+    pom2=i[2]
+    x1=pom2[0]
+    y1=pom2[1]
+    pom1=i[1].move(x1,y1)
+    pomlista.insert(-1,(pom,pom1,pom2))
+lista_tusk=pomlista
+pomlista=[]
 
+lista = lista_tusk + lista_kaczynski
 
 ############# wczytujemy wybuch 
 for i in range(9,42):
