@@ -39,11 +39,11 @@ speedstrz = [4, 0]
 speed = [0,0]
 #l_kamien=10
 
-l_kaczynski= 3;
+l_kaczynski= 10;
 l_tusk = 3;
 
 #speedkam=[-4,0]
-speed_tusk = [-3,0]
+speed_tusk = [-5,0]
 speed_kaczynski = [-2,0]
 
 #lista=[]
