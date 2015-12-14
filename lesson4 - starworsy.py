@@ -28,12 +28,10 @@ def graj(x):
       pygame.mixer.music.load(x)
       pygame.mixer.music.play() 
 
-
-
 thread.start_new_thread(aaplayer,())
 
 
-size = width, height = 800, 600
+size = width, height = 1366, 768
 speedtlo = [-5, 0]
 speedstrz = [4, 0]
 speed = [0,0]
@@ -55,6 +53,8 @@ strzalist=[]
 kolizja=0
 wybuchlista=[]
 wybuchpomlista=[]
+
+ilosc_zyc = 2
 
 
 
@@ -136,7 +136,7 @@ pygame.mouse.set_visible(0)
 
 
 
-while len(lista)>0:
+while len(lista)> 0 and ilosc_zyc != 0:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
         #### ruch klawiszy
@@ -178,6 +178,9 @@ while len(lista)>0:
     for i in lista:
       if statekrect.collidelistall([i[1]]):
          kolizja=1
+         ilosc_zyc-=1
+         sys.stdout.write("Kolizja")
+         sys.stdout.flush()
 
 
     ### kolizja strzalow z kamieniami
