@@ -53,13 +53,7 @@ strzalist=[]
 kolizja=0
 wybuchlista=[]
 wybuchpomlista=[]
-
 ilosc_zyc = 2
-
-
-
-
-
 screen = pygame.display.set_mode(size)
  
 tlo1 = pygame.image.load("files/tlo.bmp")
@@ -76,14 +70,6 @@ koniecrect = koniecrect.move([40,200])
 
 strzal = pygame.image.load("files/strzal.gif")
 strzalrect = strzal.get_rect()
-
-# ##################### lista kamieni
-# for i in range(1,l_kamien+2):
-   # pom = pygame.image.load("files/kamien.gif")
-   # pom1= pom.get_rect()
-   # pom2= (random.randint(850,1500),random.randint(51,550))
-   # ###pom2=(300,300)
-   # lista.insert(-1,(pom,pom1,pom2))
 
 ##Lista Tuskow
 for i in range(1,l_tusk+2):
@@ -136,7 +122,7 @@ pygame.mouse.set_visible(0)
 
 
 
-while len(lista)> 0 and ilosc_zyc != 0:
+while len(lista)> 0:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
         #### ruch klawiszy
@@ -179,7 +165,7 @@ while len(lista)> 0 and ilosc_zyc != 0:
       if statekrect.collidelistall([i[1]]):
          kolizja=1
          ilosc_zyc-=1
-         sys.stdout.write("Kolizja")
+         sys.stdout.write("Kolizja\n")
          sys.stdout.flush()
 
 
@@ -258,16 +244,20 @@ while len(lista)> 0 and ilosc_zyc != 0:
 
 
     #### osadzanie obiektow na ekranie
+        #### osadzanie obiektow na ekranie
     screen.blit(tlo1, tlorect1)
     screen.blit(tlo2, tlorect2)
     if kolizja==0:
       screen.blit(statek, statekrect)
     else:
+      sys.stdout.write("ilosc_zyc:" + str(ilosc_zyc) + "\n")
       if wybuchlista<>[]:
          pom=wybuchlista.pop(0)
          screen.blit(pom[0], statekrect)
          graj("sound/wybuch.wav")
-      else:
+      if ilosc_zyc<=0:
+         sys.stdout.write("ilosc_zyc==0")
+         sys.stdout.flush()
          screen.blit(koniec, koniecrect)
     for i in lista:
        screen.blit(i[0],i[1])
