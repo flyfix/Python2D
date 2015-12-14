@@ -45,8 +45,8 @@ speed_tusk = [-3,0]
 speed_kaczynski = [-2,0]
 
 #lista=[]
-lista_tusk=[]
-lista_kaczynski=[]
+lista=[]
+koniec=0
 
 pomlista=[]
 strzalist=[]
@@ -71,58 +71,61 @@ koniecrect = koniecrect.move([40,200])
 strzal = pygame.image.load("files/strzal.gif")
 strzalrect = strzal.get_rect()
 
-##Lista Tuskow
-for i in range(1,l_tusk+2):
-	tusk_gif = pygame.image.load("files/tusk.jpg")
-	tusk_rect = tusk_gif.get_rect()
-	tusk_pos = (random.randint(850,1500),random.randint(51,550))
-	lista_tusk.insert(-1,(tusk_gif,tusk_rect,tusk_pos))
+def inicjalizuj_przeciwnikow(pomlista):
+    lista_tusk=[]
+    lista_kaczynski=[]
+    ##Lista Tuskow
+    for i in range(1,l_tusk+2):
+            tusk_gif = pygame.image.load("files/tusk.jpg")
+            tusk_rect = tusk_gif.get_rect()
+            tusk_pos = (random.randint(850,1500),random.randint(51,550))
+            lista_tusk.insert(-1,(tusk_gif,tusk_rect,tusk_pos))
 
-#Lista Kaczynskich
-for i in range(1,l_kaczynski+2):
-	kaczynski_gif = pygame.image.load("files/kaczynski.jpg")
-	kaczynski_rect = kaczynski_gif.get_rect()
-	kaczynski_pos = (random.randint(850,1500),random.randint(51,550))
-	###pom2=(300,300)
-	lista_kaczynski.insert(-1,(kaczynski_gif,kaczynski_rect,kaczynski_pos))
+    #Lista Kaczynskich
+    for i in range(1,l_kaczynski+2):
+            kaczynski_gif = pygame.image.load("files/kaczynski.jpg")
+            kaczynski_rect = kaczynski_gif.get_rect()
+            kaczynski_pos = (random.randint(850,1500),random.randint(51,550))
+            ###pom2=(300,300)
+            lista_kaczynski.insert(-1,(kaczynski_gif,kaczynski_rect,kaczynski_pos))
 
-for i in lista_kaczynski:
-    pom=i[0]
-    pom2=i[2]
-    x1=pom2[0]
-    y1=pom2[1]
-    pom1=i[1].move(x1,y1)
-    pomlista.insert(-1,(pom,pom1,pom2))
-lista_kaczynski=pomlista
-pomlista=[]
+    for i in lista_kaczynski:
+        pom=i[0]
+        pom2=i[2]
+        x1=pom2[0]
+        y1=pom2[1]
+        pom1=i[1].move(x1,y1)
+        pomlista.insert(-1,(pom,pom1,pom2))
+    lista_kaczynski=pomlista
+    pomlista=[]
+    
+    for i in lista_tusk:
+        pom=i[0]
+        pom2=i[2]
+        x1=pom2[0]
+        y1=pom2[1]
+        pom1=i[1].move(x1,y1)
+        pomlista.insert(-1,(pom,pom1,pom2))
+    lista_tusk=pomlista
+    pomlista=[]
+    lista = lista_tusk + lista_kaczynski  
+    return lista
 
-for i in lista_tusk:
-    pom=i[0]
-    pom2=i[2]
-    x1=pom2[0]
-    y1=pom2[1]
-    pom1=i[1].move(x1,y1)
-    pomlista.insert(-1,(pom,pom1,pom2))
-lista_tusk=pomlista
-pomlista=[]
-
-lista = lista_tusk + lista_kaczynski
 
 ############# wczytujemy wybuch 
-for i in range(9,42):
-   pomnazwa="wybuch\wyb"+str(i)+".gif"
-   pom = pygame.image.load(pomnazwa)
-   pom1= pom.get_rect()
-   ###pom2=(300,300)
-   wybuchlista.insert(-1,(pom,pom1,pom2))
+    for i in range(9,42):
+       pomnazwa="wybuch\wyb"+str(i)+".gif"
+       pom = pygame.image.load(pomnazwa)
+       pom1= pom.get_rect()
+       ###pom2=(300,300)
+       wybuchlista.insert(-1,(pom,pom1,pom2))
 
 
-pygame.mouse.set_pos([1,400])
-pygame.mouse.set_visible(0)
+    pygame.mouse.set_pos([1,400])
+    pygame.mouse.set_visible(0)
+lista = inicjalizuj_przeciwnikow(pomlista)
 
-
-
-while len(lista)> 0:
+while ilosc_zyc > 0:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
         #### ruch klawiszy
@@ -165,6 +168,7 @@ while len(lista)> 0:
       if statekrect.collidelistall([i[1]]):
          kolizja=1
          ilosc_zyc-=1
+         lista = inicjalizuj_przeciwnikow(pomlista)
          sys.stdout.write("Kolizja\n")
          sys.stdout.flush()
 
